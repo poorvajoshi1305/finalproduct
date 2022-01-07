@@ -31,14 +31,17 @@ const MyComponent = () => {
   };
 
   const userRegister = async () =>{
-    if((username == "" && username.length < 6 )||( password == "" && password.length < 6))
+    if((username.match(/[a-zA-Z]/g) && username.length >5)&&(password.match(/[a-z]/g) && password.match(/[A-Z]/g) && password.match(/[0-9]/g) && password.match(/[^a-zA-Z\d]/g) && password.length >= 8))
     {
-      alert("invalid !!");
+      alert(`You are registered !!`);
+    }
+    else
+    {
+      alert("invalid !! Username sholud be atleast 6 characters and password should contain atleast 1 uppercase 1 lowercase 1 digit 1 special character and should have atleast atleast 8 characters");
       setValidationError(true);
       return;
     }
-    else
-    alert(`You are registered !!`);
+
     const url = "http://localhost:4000/add-user";
     const data = {
       username : username,
@@ -73,11 +76,11 @@ const MyComponent = () => {
             <h2 className='bg-warning p-3'>Registration From</h2>
             <hr />
             <div className="form-group">
-              <input type="text" value={username} placeholder='Username' onChange={onChangeusername}className={
+              <input type="text" value={username} placeholder='Username' onChange={onChangeusername} class="w-100"className={
              username == "" && validationError ? "border border-danger" : ""}/>
             </div>
             <div className="form-group">
-              <input type="text" value={password} placeholder='Password' className='w-100' onChange={onChangepassword} className={
+              <input type="text" value={password} placeholder='Password' class='w-100' onChange={onChangepassword} className={
             password == "" && validationError ? "border border-danger" : ""}/>
             </div>
             <div className="form-group">
