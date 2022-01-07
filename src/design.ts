@@ -3,15 +3,15 @@ import axios from "axios";
 import './App.css';
 import { useState } from 'react';
 
-function App() {
-  return (
-    <>
-    <MyComponent />
-    </>
-  );
-}
+// function App() {
+//   return (
+//     <>
+//     <MyComponent />
+//     </>
+//   );
+// }
 
-export default App;
+// export default App;
 
 function MyComponent()
 {
