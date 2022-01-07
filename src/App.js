@@ -2,11 +2,13 @@ import React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 // import { listenerCount } from 'process';
+// import {Register} from './Register';
 
 const App = () => {
   return (
     <>
       <MyComponent />
+      {/* <Register /> */}
     </>
   )
 }
@@ -16,6 +18,7 @@ export default App;
 
 const MyComponent = () => {
 
+  const [validationError, setValidationError] = useState(false);
   const [username , setUsername] = useState("");
   const [password , setPassword] = useState("");
   const [list, setList] = useState([]);
@@ -28,9 +31,10 @@ const MyComponent = () => {
   };
 
   const userRegister = async () =>{
-    if(username == "" || password == "")
+    if((username == "" && username.length < 6 )||( password == "" && password.length < 6))
     {
       alert("invalid !!");
+      setValidationError(true);
       return;
     }
     else
@@ -54,40 +58,63 @@ const MyComponent = () => {
 
   const getUsers = async () => {
     const url = "http://localhost:4000/users";
-    const result = await fetch(url);
-    const list = await result.json();
+    const result = await axios.get(url);
 
+    const list = result.data;
     const newList = [...list];
     setList(newList);
   };
   return (
     <>
-      <div>
-        <div>
+      <div className='container-fluid bg-info mt-0'>
+        <div className='d-flex justify-content-center mt-5'>
+          <div>
           <form>
-            <h2>Registration From</h2>
-            <div>
-              <input type="text" value={username} placeholder='Username' onChange={onChangeusername}/>
+            <h2 className='bg-warning p-3'>Registration From</h2>
+            <hr />
+            <div className="form-group">
+              <input type="text" value={username} placeholder='Username' onChange={onChangeusername}className={
+             username == "" && validationError ? "border border-danger" : ""}/>
             </div>
-            <div>
-              <input type="text" value={password} placeholder='Password' onChange={onChangepassword}/>
+            <div className="form-group">
+              <input type="text" value={password} placeholder='Password' className='w-100' onChange={onChangepassword} className={
+            password == "" && validationError ? "border border-danger" : ""}/>
             </div>
-            <div>
-              <input type="button" value="Regiser" onClick={userRegister}/>
-              <input type="button" value="Users" onClick={getUsers}/>
+            <div className="form-group">
+              <input type="button" value="Regiser" className='btn btn-3 btn-success' style={{width:"45vh"}} onClick={userRegister}/>
+              <input type="button" value="Users" className='btn btn-3 btn-primary ml-1' style={{width:"45vh"}} onClick={getUsers}/>
             </div>
           </form>
           <hr />
+
           <h1>users</h1>
           {list.map((item, index) =>(
               <div key={index}>
-                {item.username} {item.password}
+                {/* <p>
+                    {username}
+                </p>
+                <p>
+                    {password}
+                </p> */}
+                {/* <div key={index} className='justify-center-space'> */}
+                  {/* <b>USERNAME : </b>{item.username} <b>PASSWORD : </b> {item.password}</div> */}
+                  {/* style={{border: "2px solid"}} */}
+                  <table className="table table-dark" >
+                      <tr>
+                      <th scope="col"><b>USERNAME</b></th>
+                      <th scope="col"><b>USERNAME</b></th>
+                      </tr>
+                      <tr>
+                      <td scope="row">{item.username}</td>
+                      <td scope="row">{item.username}</td>
+                      </tr>
+                  </table>
               </div>
           ))}
+          </div>
         </div>
       </div>
     </>
   )
 };
-
 
